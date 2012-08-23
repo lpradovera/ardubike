@@ -1,0 +1,6 @@
+/.bundle
+.DS_Store
+coverage
+config/config.yml
+*.swp
+*.swo
