@@ -8,6 +8,8 @@ GEM
   remote: https://rubygems.org/
   specs:
     awesome_print (1.0.2)
+    celluloid (0.11.1)
+      timers (>= 1.0.0)
     serialport (1.1.0)
     timers (1.0.1)
     trollop (1.16.2)
@@ -17,6 +19,6 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
+  celluloid
   serialport
-  timers
   vlcrc!
