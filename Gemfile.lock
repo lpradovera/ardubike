@@ -1,5 +1,6 @@
-PATH
-  remote: /Users/luca/projects/vlcrc
+GIT
+  remote: git://github.com/polysics/vlcrc.git
+  revision: 2c91f6ac3bfc6d59508469ae465e9c0506604220
   specs:
     vlcrc (0.1.15)
       trollop (~> 1.16.2)

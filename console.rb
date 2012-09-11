@@ -3,7 +3,8 @@ require "bundler"
 Bundler.setup
 Bundler.require
 
-port_str = "/dev/tty.usbserial-A9007N5X"
+#port_str = "/dev/tty.usbserial-A9007N5X"
+port_str = "/dev/ttyUSB0"
 baud_rate = 9600  
 data_bits = 8  
 stop_bits = 1  

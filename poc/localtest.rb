@@ -78,7 +78,7 @@ class SpeedManager
 
   def video_speed(reading)
     play_or_stop(reading)
-    set_speed(0.5) if reading >= 5 && reading < 10
+    set_speed(0.3) if reading >= 5 && reading < 10
     set_speed(0.8) if reading >= 10  && reading < 15
     set_speed(1) if reading >= 15  && reading < 25
     set_speed(1.5) if reading >= 25
@@ -104,7 +104,7 @@ end
 class VlcControl
   include Celluloid
   def self.instance
-    @instance ||  VLCRC::VLC.new('localhost', 1234, "/Applications/VLC.app/Contents/MacOS/VLC")
+    @instance ||  VLCRC::VLC.new('localhost', 1234, "/usr/bin/vlc")
   end
 
   def self.run
@@ -114,14 +114,14 @@ class VlcControl
       sleep 0.1
       self.instance.connect
     end
-    self.instance.media = "/Users/luca/Documents/ArduBike/spiderman.mp4"
+    self.instance.media = "/home/lgdemo/Video/3D_TnB_12lg_2h_docu_world_cities_paris_ips_20130630.tp"
     self.instance.pause
   end
 end
 
 fs = FakeSerial.new
-SpeedManager.instance.run!
 VlcControl.run
+SpeedManager.instance.run!
 
 loop do
   cmd = STDIN.gets.chomp

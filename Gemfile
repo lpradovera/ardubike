@@ -2,6 +2,6 @@ source 'https://rubygems.org'
 
 gem 'serialport'
 gem 'awesome_print'
-gem 'vlcrc', :path => "/Users/luca/projects/vlcrc"
+#gem 'vlcrc', :path => "/Users/luca/projects/vlcrc"
 gem 'celluloid'
-#gem 'vlcrc', :git => "git://github.com/polysics/vlcrc.git"
+gem 'vlcrc', :git => "git://github.com/polysics/vlcrc.git"
