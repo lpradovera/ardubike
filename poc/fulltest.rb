@@ -3,7 +3,7 @@ require "bundler"
 Bundler.setup
 Bundler.require 
 
-step = 1 
+step = 0.5 
 
 class SerialWrapper
   #include Celluloid
@@ -40,6 +40,9 @@ class SpeedManager
     @odorama1 = false
     @odorama2 = false
     @stopped_steps = 0
+    @history = []
+    3.times { @history.push(0) }
+    @skipped_seek_backs = 0
   end
 
   def run
@@ -57,7 +60,11 @@ class SpeedManager
       speed = 0
       @first = false
     else
-      speed = (@acc * 3.1415 * 0.46 * 3.6 / @step).round(2)
+      @history.shift
+      @history.push(@acc)
+      p @history
+      avg = @history.inject{|sum, el| sum + el } / @history.size.to_f
+      speed = avg * 3.1415 * 0.46 * 3.6 / @step.to_f
       if @acc == 0
         @stopped_steps += 1
       else
@@ -76,15 +83,22 @@ class SpeedManager
 
   def video_speed(reading)
     if reading >= 0
+      @skipped_seek_backs = 0
       play_or_stop(reading)
       set_speed(0.5) if reading >= 5 && reading < 10
       set_speed(0.7) if reading >= 10  && reading < 15
-      set_speed(1) if reading >= 15  && reading < 25
-      set_speed(1.5) if reading >= 25 && reading < 35
+      set_speed(1) if reading >= 15  && reading < 30
+      set_speed(1.5) if reading >= 30 && reading < 35
       set_speed(2) if reading >= 35
     else
-      seek_back('-2') if reading <= -1 && reading > -10
-      seek_back('-5') if reading <= -10
+      #seek_back('-2') if reading <= -1 && reading > -10
+      #seek_back('-5') if reading <= -10
+      if @skipped_seek_backs == 3
+        seek_back('-5')
+        @skipped_seek_backs = 0
+      else
+        @skipped_seek_backs += 1
+      end
     end
   end
 
@@ -102,7 +116,7 @@ class SpeedManager
     p "STOPPED"
     @playing = false
     VlcControl.ask("seek -1000", false)
-    #odorama()
+    odorama()
     ventola(0)
   end
 
@@ -196,7 +210,8 @@ class VlcControl
       sleep 0.1
       self.instance.connect
     end
-    self.instance.media = "/home/lgdemo/Video/3D_SxS_11lg_real_legends_of_flight.tp"
+    self.instance.media = "/home/lgdemo/Video/incipit.m2t"
+    #self.instance.media = "/home/lgdemo/Video/3D_SxS_11lg_real_legends_of_flight.tp"
     #self.instance.media = "/home/lgdemo/Video/3D_TnB_12lg_2h_docu_world_cities_paris_ips_20130630.tp"
     VlcControl.ask("pause", false)
     VlcControl.ask("fullscreen", false)
